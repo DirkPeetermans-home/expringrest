@@ -63,7 +63,7 @@ public class FilePersonRepository implements PersonRepository {
 					p.setFirstName(!vals[1].equals("null") ? vals[1] : null);
 					p.setLastName(!vals[2].equals("null") ? vals[2] : null);
 					
-					
+					//ADDED
 					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 					LocalDate date1=LocalDate.parse(vals[3],formatter);
 					p.setBirthDate(!vals[3].equals("null") ? date1 : null);
@@ -175,7 +175,6 @@ public class FilePersonRepository implements PersonRepository {
 	}
 
 	private StringBuilder parsePerson(Person p) {
-		StringBuilder sb = new StringBuilder();
 		int nr = p.getCompany().getAddress().getNr();
 		
 				
