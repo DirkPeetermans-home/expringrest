@@ -8,11 +8,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import be.abis.exercise.exception.PersonCanNotBeDeletedException;
+import be.abis.exercise.model.Login;
 import be.abis.exercise.model.Person;
 import be.abis.exercise.service.PersonService;
 
@@ -26,64 +28,51 @@ public class PersonController {
 	
 	@GetMapping("{id}")
 	public Person findPerson(@PathVariable("id") int id){
-    	return personService.findPerson(id);    	
+    	return personService.findPerson(id);    
+    	//GET http://localhost:8085/exercise/api/persons/2
     }
 	
 	@GetMapping("")
 	public ArrayList<Person> getAllPersons(){
-    	return personService.getAllPersons();    	
+    	return personService.getAllPersons();   
+    	//GET http://localhost:8085/exercise/api/persons
     }
 	
-	@PostMapping("")
-	public Person findPersonWithEmailAndPasswd(@RequestBody Person person) {
-		Person p = personService.findPerson(person.getEmailAddress(),person.getPassword());
+	@GetMapping("/login")
+	public Person findPersonWithEmailAndPasswd(@RequestBody Login login) {
+		Person p = personService.findPerson(login.getEmail(),login.getPassword());
     	return p; 
-    	/**POST http://localhost:8085/exercise/api/persons
+    	/**GET http://localhost:8085/exercise/api/persons/login
     	 * 
     	 * Put in Body in Postman
     	 * 
     	 * {
-		    "personId": 2,
-		    "firstName": "Mary",
-		    "lastName": "Jones",
-		    "age": 27,
+		    
 		    "emailAddress": "mjones@abis.be",
 		    "password": "abc123",
-		    "language": "fr",
-		    "company": {
-		        "name": "Abis",
-		        "telephoneNumber": "016/245610",
-		        "vatNr": "BE 0428.407.725",
-		        "address": {
-		            "street": "Diestsevest",
-		            "town": "Leuven",
-		            "zipcode": "3000",
-		            "nr": 32
-		        }
 		    }
-		}
     	*/
 	}
     	   
 	
-	@PostMapping("new")
+	@PostMapping("")
 	public void addPerson(@RequestBody Person person) {
 		try {
 			 personService.addPerson(person);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		/**POST http://localhost:8085/exercise/api/persons/new
+		/**POST http://localhost:8085/exercise/api/persons
     	 * 
     	 * Put in Body in Postman
     	 * 
     	 * {
-		    "personId": 26,
-		    "firstName": "Mike",
-		    "lastName": "Scott",
-		    "age": 62,
-		    "emailAddress": "mscot@waterboys.com",
-		    "password": "abc123",
+		    "personId": 31,
+		    "firstName": "Steve",
+		    "lastName": "Wickham",
+		    "age": 66,
+		    "emailAddress": "swickham@waterboys.com",
+		    "password": "abc456",
 		    "language": "en",
 		    "company": {
 		        "name": "None",
@@ -110,36 +99,20 @@ public class PersonController {
 		//DELETE http://localhost:8085/exercise/api/persons/70
 }
 	
-	@PostMapping("passwd")
-	public void changePasswd(@RequestBody Person person) {
+	@PutMapping("{id}")
+	public void changePasswd(@PathVariable("id") int id,@RequestBody Person person) {
 		try {
-		 personService.changePassword(person,person.getPassword());
+		 personService.changePassword(personService.findPerson(id),person.getPassword());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		/**POST http://localhost:8085/exercise/api/persons/passwd
+		/**PUT http://localhost:8085/exercise/api/persons/26
     	 * 
     	 * Put in Body in Postman
     	 * 
     	 * {
-		    "personId": 26,
-		    "firstName": "Mike",
-		    "lastName": "Scott",
-		    "age": 62,
-		    "emailAddress": "mscot@waterboys.com",
-		    "password": "abc456",
-		    "language": "en",
-		    "company": {
-		        "name": "None",
-		        "telephoneNumber": "016/1111111",
-		        "vatNr": "BE 0428.407.725",
-		        "address": {
-		            "street": "Diestsevest",
-		            "town": "Leuven",
-		            "zipcode": "3000",
-		            "nr": 32
-		        }
-		    }
+		    
+		    "password": "abc456",		       
 		}
     	*/
 }
