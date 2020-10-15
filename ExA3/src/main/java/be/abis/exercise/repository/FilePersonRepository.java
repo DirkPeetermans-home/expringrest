@@ -175,6 +175,7 @@ public class FilePersonRepository implements PersonRepository {
 	}
 
 	private StringBuilder parsePerson(Person p) {
+		StringBuilder sb = new StringBuilder();
 		int nr = p.getCompany().getAddress().getNr();
 		
 				
